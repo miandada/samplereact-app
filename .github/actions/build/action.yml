@@ -11,10 +11,6 @@ outputs:
     value: ${{ steps.app-info.outputs.artifact_name }}
 runs:
   using: "composite"
-  defaults:
-    run:
-      working-directory: ${{inputs.base_path}}
-      shell: bash
   steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -25,6 +21,8 @@ runs:
       - name: Cache Node.js dependencies
         uses: actions/cache@v4
         id: cache
+        working-directory: ${{inputs.base_path}}
+        shell: bash
         with:
           path: |
             ${{inputs.base_path}}/node_modules
@@ -35,11 +33,15 @@ runs:
 
       - name: Install Dependencies
         if:  ${{steps.cache.outputs.cache-hit != 'true'}}
+        working-directory: ${{inputs.base_path}}
+        shell: bash
         run: npm install
 
       - name: obtain App Name Version for artifact
         id: app-info
-        run: |
+        working-directory: ${{inputs.base_path}}
+        shell: bash
+        run: |         
           APP_NAME=$(jq -r .name package.json)
           APP_VERSION=$(jq -r .version package.json)
           echo "APP_NAME=$APP_NAME" >> $GITHUB_OUTPUT
@@ -47,6 +49,8 @@ runs:
           echo "artifact_name=$APP_NAME-$APP_VERSION" >> $GITHUB_OUTPUT
 
       - name: Build Project 
+        working-directory: ${{inputs.base_path}}
+        shell: bash
         run: |        
             npm run build          
 
