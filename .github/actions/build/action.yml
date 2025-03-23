@@ -20,9 +20,7 @@ runs:
 
       - name: Cache Node.js dependencies
         uses: actions/cache@v4
-        id: cache
-        working-directory: ${{inputs.base_path}}
-        shell: bash
+        id: cache        
         with:
           path: |
             ${{inputs.base_path}}/node_modules
