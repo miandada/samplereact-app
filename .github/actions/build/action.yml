@@ -14,6 +14,7 @@ runs:
   defaults:
     run:
       working-directory: ${{inputs.base_path}}
+      shell: bash
   steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
