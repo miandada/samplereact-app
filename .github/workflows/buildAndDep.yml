@@ -13,6 +13,9 @@ jobs:
     outputs:
         artifact_name: ${{ steps.build.outputs.artifact_name }}
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: BuildAPP
         uses: ./.github/actions/build
         id: build
