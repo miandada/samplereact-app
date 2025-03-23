@@ -7,11 +7,22 @@ jobs:
     uses: mad81github/helloworldjs-fork/.github/workflows/detectEnvWF.yml@main
     with:
       branch: ${{github.ref}}    
-  
   build:
-    uses: mad81github/helloworldjs-fork/.github/workflows/buildWF.yml@main
-    with:
-      base_path: 'sample-app'
+    runs-on: ubuntu-latest
+    needs: [detect-environment]
+    outputs:
+        artifact_name: ${{ steps.build.outputs.artifact_name }}
+    steps:
+      - name: BuildAPP
+        uses: ./.github/actions/build.yml@main
+        id: build
+        with:
+            base_path: 'sample-app'            
+     
+ # build:
+ #   uses: mad81github/helloworldjs-fork/.github/workflows/buildWF.yml@main
+ #   with:
+ #     base_path: 'sample-app'
 
 
   deploy:
