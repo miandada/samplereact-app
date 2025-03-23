@@ -3,5 +3,20 @@ on:
     push:        
 
 jobs:
-   build-and-deploy:
-    uses: mad81github/helloworldjs-fork/.github/workflows/workflow.yml@main
+  detect-environment:
+    uses: mad81github/helloworldjs-fork/.github/workflows/detectEnvWF.yml@main
+    with:
+      branch: ${{github.ref}}    
+  
+  build:
+    uses: mad81github/helloworldjs-fork/.github/workflows/buildWF.yml@main
+    with:
+      base_path: 'sample-app'
+
+
+  deploy:
+   needs: [build,detect-environment]
+   uses: mad81github/helloworldjs-fork/.github/workflows/deployWF.yml@main
+   with:
+     env: ${{needs.detect-environment.outputs.environment}}
+     artifact_name: ${{needs.build.outputs.artifact_name}}
