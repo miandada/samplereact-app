@@ -1,0 +1,7 @@
+name: Build and Deploy
+on: 
+    push:        
+
+jobs:
+   build-and-deploy:
+    uses: mad81github/helloworldjs-fork/.github/workflows/workflow.yml@main
